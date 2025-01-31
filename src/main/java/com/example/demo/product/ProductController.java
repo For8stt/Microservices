@@ -21,18 +21,21 @@ public class ProductController {
     private final GetProductService getProductService;
     private final UpdateProductService updateProductService;
     private final DeleteProductService deleteProductService;
+    private final SearchProductService searchProductService;
 
 
     public ProductController(CreateProductService createProductService,
                              GetProductsService getProductsService,
                              GetProductService getProductService,
                              UpdateProductService updateProductService,
-                             DeleteProductService deleteProductService){
+                             DeleteProductService deleteProductService,
+                             SearchProductService searchProductService){
         this.createProductService=createProductService;
         this.getProductsService=getProductsService;
         this.getProductService=getProductService;
         this.deleteProductService=deleteProductService;
         this.updateProductService=updateProductService;
+        this.searchProductService=searchProductService;
     }
 
     @PostMapping("/product")
@@ -49,6 +52,10 @@ public class ProductController {
         return getProductService.execute(id);
     }
 
+    @GetMapping("/product/search")
+    public ResponseEntity<List<ProductDTO>> searchProductByName(@RequestParam String name) {
+        return searchProductService.execute(name);
+    }
 
     @PutMapping("/product/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody Product product){
