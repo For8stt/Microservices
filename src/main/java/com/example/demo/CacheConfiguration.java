@@ -24,7 +24,7 @@ public class CacheConfiguration {
         return manager;
     }
     @CacheEvict(value = "productCache",allEntries = true)
-    @Scheduled(fixedDelay = 7000, initialDelay = 0)
+    @Scheduled(fixedDelay = 70000, initialDelay = 0)
     public void evictProductCache(){
         System.out.println("Evicting Product Cache");
     }
