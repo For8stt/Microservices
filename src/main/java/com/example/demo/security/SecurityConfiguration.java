@@ -1,6 +1,7 @@
 package com.example.demo.security;
 
 
+import com.example.demo.security.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -52,6 +53,7 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize->{
+                    authorize.requestMatchers("/login").permitAll();
                     authorize.requestMatchers("/createnewuser").permitAll();
 
                     authorize.anyRequest().authenticated();
@@ -68,11 +70,16 @@ public class SecurityConfiguration {
 
                 })
 //                .httpBasic(Customizer.withDefaults())
-                .addFilterBefore(
-                        new BasicAuthenticationFilter(authenticationManager(httpSecurity)),
-                        UsernamePasswordAuthenticationFilter.class
-                )
+//                .addFilterBefore(
+//                        new BasicAuthenticationFilter(authenticationManager(httpSecurity)),
+//                        UsernamePasswordAuthenticationFilter.class
+//                )
+                .addFilterBefore(authenticationFilter(),UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+    @Bean
+    public JwtAuthenticationFilter authenticationFilter(){
+        return new JwtAuthenticationFilter();
     }
 
 }
